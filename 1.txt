@@ -1,0 +1,47 @@
+What is kubernetes:
+
+   Kubernetes is an open source container orchestration platform that helps to maintain containarized applications (in different deployment environment like cloud/physical/hybrid)
+   The rise of microservices led to the rise of containers which led to the need to maintain those containers which led to the rise of kubernetes  
+
+Features provided by kubernetes:
+
+   1) High availability(no downtime)
+   2) Scalability
+   3) Disaster recovery 
+
+Main Components of kubernetes:
+
+   1)Pods - The smallest unit of kubernetes inside which our application runs(usually 1 application per pod is preferred).Each pods inside a node has its own IP address and can communicate with each other using IP address but if a pod dies/deleted one more pod is created automatically and it's IP address changes.To overcome this we have one more component called service.
+   2)Services - It is like a static IP of a pod by which two pods can communicate. It also acts as a loadbalancer by catching the request and forwarding it into whichever pod is less busy. Types of services:
+        ClusterIP
+        Nodeport
+        Loadbalancer
+        External name
+   3)Configmap - External configuration data of our application that can be mapped with pods
+   4)Secret-Used to store secret data such as credentials externally(in base 64 encoded format) and can be mapped with pods
+ (The data in config map and secret can be used inside our pods by environmental variables)
+   5)Volumes - It is like an external harddisk. That is the data is attached to a physical storage which is not part of the cluster
+   6)Deployment - We can replicate our pod by defining blueprint for the pod and specifying the number of replicas in a yml format
+ (We can't replicate our dbs using deployment because it leads with data and every clone db needs to access the datastorage so there should be a mechanism stating which pod writes to the datastorage)
+   7)Statefulset - Similar to deployment basically for databases. It takes care of replicating pods and makes sure db read and write are synchronized. The deployment of statefulset is complex so people prefer to deploy databases outside cluster
+
+Kubernetes Architecture:
+
+    The kubernetes architecture comprises of master nodes and worker nodes.
+
+    Each worker nodes should have three processes installed 
+          1)Container runtime environment(docker)
+          2)Kubelet - It starts a pod inside a container and is responsible for assigning resources from node to container(like CPU )
+          3)Kubeproxy - By using an intelligent forwarding mechanism, kubeproxy is responsible for forwarding requests from services to pods
+
+    Each master nodes should have the four processes:
+          1)API Server - It is like a cluster gateway.When we send some request like creating a new application in a cluster, we actually interact with API server using any means like Kubernetes API or Kubectl. It validates the request and forwards it into other processes
+          2)Scheduler - Based the resource avalaibility and state of the node,the scheduler decides on which node the pod should be assigned
+(It only decides but the actual creation of pods inside a node is done by kubelet)
+          3)Controller Manager - Detects the pod state(if a pod dies it notifies to the scheduler manager)
+          4) etcd - It contains all information of the cluster. Every changes made in a cluster gets saved here. It is very important because all the other processes get their required information from etcd (The application's data is not stored here)  
+                                              
+                                    
+                       
+ 
+ 
